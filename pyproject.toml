@@ -1,0 +1,87 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "medjay"
+dynamic = ["version"]
+description = "IoC analysis tool that queries OSINT sources and presents readable, actionable results"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "n36l3c7" }]
+keywords = ["ioc", "osint", "threat-intelligence", "security", "cli"]
+classifiers = [
+  "Development Status :: 2 - Pre-Alpha",
+  "Environment :: Console",
+  "Intended Audience :: Information Technology",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Security",
+  "Typing :: Typed",
+]
+dependencies = [
+  "click>=8.1",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0",
+  "ruff>=0.6",
+  "mypy>=1.11",
+]
+
+[project.scripts]
+medjay = "medjay.cli:main"
+
+[project.urls]
+Homepage = "https://n36l3c7.github.io/medjay/"
+Repository = "https://github.com/n36l3c7/medjay"
+Changelog = "https://github.com/n36l3c7/medjay/blob/main/CHANGELOG.md"
+Issues = "https://github.com/n36l3c7/medjay/issues"
+
+[tool.hatch.version]
+path = "src/medjay/__init__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/medjay"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = [
+  "E",   # pycodestyle errors
+  "W",   # pycodestyle warnings
+  "F",   # pyflakes
+  "I",   # isort
+  "N",   # pep8-naming
+  "UP",  # pyupgrade
+  "B",   # flake8-bugbear
+  "C4",  # flake8-comprehensions
+  "SIM", # flake8-simplify
+  "RUF", # ruff-specific rules
+  "ANN", # flake8-annotations
+  "S",   # flake8-bandit
+  "T20", # flake8-print: use click.echo / rich, never bare print
+  "PT",  # flake8-pytest-style
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101"]  # assert is the pytest idiom
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+files = ["src", "tests"]
+warn_unreachable = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --strict-markers"

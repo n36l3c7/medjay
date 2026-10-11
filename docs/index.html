@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Medjay</title>
+  <meta name="description" content="IoC analysis tool that queries OSINT sources and presents readable, actionable results.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Medjay</h1>
+    <p class="tagline">IoC analysis tool that queries OSINT sources and presents readable, actionable results.</p>
+    <nav>
+      <a href="index.html">Overview</a>
+      <a href="https://github.com/n36l3c7/medjay">Source</a>
+      <a href="https://github.com/n36l3c7/medjay/blob/main/CHANGELOG.md">Changelog</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="notice">
+      <strong>Status: pre-alpha.</strong> Medjay is under active development and nothing is released yet.
+      This page describes the project's goals; installation and usage pages will appear with the first
+      functional release.
+    </div>
+
+    <h2>What it does</h2>
+    <p>
+      Medjay takes one or many Indicators of Compromise &mdash; IPv4 and IPv6 addresses, domains, URLs,
+      file hashes and email addresses &mdash; looks them up against OSINT sources through their public
+      APIs, enriches them with passive data that costs no API quota, and shows one aggregated verdict
+      per indicator together with the evidence from each source.
+    </p>
+    <p>
+      The same core powers a command-line interface for pipelines and a local web interface for
+      interactive triage. It is built for analysts, incident responders and SOC teams who want to
+      triage indicators quickly without burning through free-tier API quotas.
+    </p>
+
+    <h2>Design principles</h2>
+    <ul>
+      <li><strong>One core, thin front-ends.</strong> Parsing, lookups, caching, aggregation, history and export live in a single package; the CLI and the web UI only present results.</li>
+      <li><strong>Respect API quotas.</strong> Per-source rate limiting, a local cache with configurable TTL, daily budgets and an offline mode that answers from cache only.</li>
+      <li><strong>Passive by default.</strong> Medjay reads what sources already know; it never submits indicators for active scanning unless explicitly asked.</li>
+      <li><strong>Explainable verdicts.</strong> The aggregation rule is documented and every per-source verdict is visible next to the aggregate.</li>
+      <li><strong>Plugins everywhere.</strong> Sources and export formats share the same plugin interface, so adding one is a small, self-contained change.</li>
+    </ul>
+
+    <h2>Roadmap</h2>
+    <table>
+      <thead>
+        <tr><th>Milestone</th><th>Scope</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Core and CLI</td><td>IoC auto-detection and refanging, bulk input, concurrent rate-limited lookups, VirusTotal, table and JSON output</td></tr>
+        <tr><td>Cache</td><td>Local cache with per-source TTL, offline mode, daily quota budgets</td></tr>
+        <tr><td>Sources</td><td>AbuseIPDB, AlienVault OTX, GreyNoise, Shodan, urlscan.io</td></tr>
+        <tr><td>Enrichment</td><td>rDNS, RDAP, GeoIP and ASN from a local database, TLS certificate data</td></tr>
+        <tr><td>Allowlist</td><td>Mark your own assets as known-good without spending API calls</td></tr>
+        <tr><td>History</td><td>Record every verdict and highlight changes between checks</td></tr>
+        <tr><td>Export</td><td>JSON, JSON Lines, CSV, TSV, Markdown, HTML, STIX 2.1, MISP, Splunk lookup, plain blocklist</td></tr>
+        <tr><td>Web UI</td><td>Local server-side rendered interface with filters, detail view and export</td></tr>
+        <tr><td>Docker</td><td>Multi-stage image and Compose file for the web UI</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Install from source</h2>
+    <pre><code>git clone https://github.com/n36l3c7/medjay.git
+cd medjay
+python -m pip install .
+medjay --version</code></pre>
+    <p>Requires Python 3.11 or newer.</p>
+  </main>
+
+  <footer>
+    <p>Medjay is released under the <a href="https://github.com/n36l3c7/medjay/blob/main/LICENSE">MIT licence</a>.</p>
+  </footer>
+</body>
+</html>
